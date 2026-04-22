@@ -2,17 +2,26 @@
 ##http://rgeostats.free.fr/demo/RGeostats.acoustic.maur.R
 #Set the working directionary
 setwd("E:/Bycatchmapping/R")
+#--------------------------------------------------------------------------
+#######Install packes##############
+#--------------------------------------------------------------------------
+
+#install.packages("RgeoS")
+library(rgeos)
+library(dplyr)
+# install.packages(MASS)
+library(MASS)
+#--------------------------------------------------------------------------
+#########Import data & cleaning ###########
+#--------------------------------------------------------------------------
+
 Grid_monsoon<- read.csv("Grid_monsoon.csv")
 Grid_winter<- read.csv("Grid_winter.csv")
 Grid_summer<- read.csv("Grid_summer.csv")
 head(Grid_monsoon)
 hist(Grid_monsoon$Ribbon_medium)
 
-#install.packages("RgeoS")
-library(rgeos)
-vgm()
 #filter seasonal data & data cleaning
-library(dplyr)
 #remove outlier
 #outlier removed from ribbonfish catch in ribbon.tot data frame
 library(data.table)
@@ -33,11 +42,9 @@ winter<-Grid_winter%>%dplyr::select(c(Longitude,Latitude,Total_robbon,U.duvaucel
                                  Crocker,S.pharaonis,P.hamrur,S.inermis,S.tumbil))
 summer<-Grid_summer%>%dplyr::select(c(Longitude,Latitude,Total_robbon,U.duvaucelii, S.eliptica,N.japanicus,
                                       Crocker,S.pharaonis,P.hamrur,S.inermis,S.tumbil))
-############Box-Cox transformation############################
-# install.packages(MASS)
-library(MASS)
+#####Box-Cox transformation##########
 
-########ribbon
+######## for ribbonfish
 #monsoon
 a<-boxcox(lm(Total_robbon ~ 1, data = monsoon))
 # Transformed data
